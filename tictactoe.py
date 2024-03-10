@@ -1,6 +1,5 @@
 import pygame
 import math
-# Initializing Pygame
 pygame.init()
 
 # Screen
@@ -17,27 +16,20 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 
 # Images
-
 X_IMAGE = pygame.transform.scale(pygame.image.load(r"C:\Users\Admin\Downloads\TIC TAC TOE\Images x.png"), (200, 210))
-
 O_IMAGE = pygame.transform.scale(pygame.image.load(r"C:\Users\Admin\Downloads\TIC TAC TOE\Images o.png"), (300,300))
-
-
 
 # Fonts
 END_FONT = pygame.font.SysFont('courier', 40)
 
-
 def draw_grid():
     gap = WIDTH // ROWS
 
-    # Starting points
     x = 0
     y = 0
 
     for i in range(ROWS):
         x = i * gap
-
         pygame.draw.line(win, GRAY, (x, 0), (x, WIDTH), 3)
         pygame.draw.line(win, GRAY, (0, x), (WIDTH, x), 3)
 
@@ -45,72 +37,61 @@ def draw_grid():
 def initialize_grid():
     dis_to_cen = WIDTH // ROWS // 2
 
-    # Initializing the array
     game_array = [[None, None, None], [None, None, None], [None, None, None]]
 
     for i in range(len(game_array)):
         for j in range(len(game_array[i])):
             x = dis_to_cen * (2 * j + 1)
             y = dis_to_cen * (2 * i + 1)
-
-            # Adding centre coordinates
             game_array[i][j] = (x, y, "", True)
-
     return game_array
 
 
 def click(game_array):
     global x_turn, o_turn, images
 
-    # Mouse position
     m_x, m_y = pygame.mouse.get_pos()
 
     for i in range(len(game_array)):
         for j in range(len(game_array[i])):
             x, y, char, can_play = game_array[i][j]
 
-            # Distance between mouse and the centre of the square
             dis = math.sqrt((x - m_x) ** 2 + (y - m_y) ** 2)
 
-            # If it's inside the square
             if dis < WIDTH // ROWS // 2 and can_play:
-                if x_turn:  # If it's X's turn
+                if x_turn: 
                     images.append((x, y, X_IMAGE))
                     x_turn = False
                     o_turn = True
                     game_array[i][j] = (x, y, 'x', False)
 
-                elif o_turn:  # If it's O's turn
+                elif o_turn:
                     images.append((x, y, O_IMAGE))
                     x_turn = True
                     o_turn = False
                     game_array[i][j] = (x, y, 'o', False)
 
 
-# Checking if someone has won
 def has_won(game_array):
-    # Checking rows
+  
     for row in range(len(game_array)):
         if (game_array[0][2] == game_array[1][2] == game_array[2][2]) and game_array[0][2] != "":
             display_message(game_array[0][2].upper() + " has won!")
             return True
 
-    # Checking columns
     for col in range(len(game_array)):
         if (game_array[0][2] == game_array[1][2] == game_array[2][2]) and game_array[0][2] != "":
             display_message(game_array[0][2].upper() + " has won!")
             return True
 
-    # Checking main diagonal
     if (game_array[0][0][2] == game_array[1][1][2] == game_array[2][2][2]) and game_array[0][0][2] != "":
         display_message(game_array[0][0][2].upper() + " has won!")
         return True
 
-    # Checking reverse diagonal
     if (game_array[0][2][2] == game_array[1][1][2] == game_array[2][0][2]) and game_array[0][2][2] != "":
         display_message(game_array[0][2][2].upper() + " has won!")
         return True
-
+        
     return False
 
 
@@ -137,7 +118,6 @@ def render():
     win.fill(WHITE)
     draw_grid()
 
-    # Drawing X's and O's
     for image in images:
         x, y, IMAGE = image
         win.blit(IMAGE, (x - IMAGE.get_width() // 2, y - IMAGE.get_height() // 2))
