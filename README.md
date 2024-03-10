@@ -3,7 +3,7 @@
 ALGORITHM:
 
 Initialize Pygame:
-Set up the screen with a width of 00 pixels.
+Set up the screen with a width of 700 pixels.
 Set the title of the window to "TicTacToe".
 Define colors, images for X and O, and a font for the end message.
 
